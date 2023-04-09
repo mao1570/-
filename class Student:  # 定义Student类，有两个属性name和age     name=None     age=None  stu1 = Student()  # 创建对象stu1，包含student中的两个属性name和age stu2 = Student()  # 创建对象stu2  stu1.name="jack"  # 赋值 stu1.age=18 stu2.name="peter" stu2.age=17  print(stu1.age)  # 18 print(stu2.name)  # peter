@@ -1,0 +1,35 @@
+import json
+
+from data_define import Data
+class FileReader:
+    def read_data(self):
+        pass
+
+class File1(FileReader):  # 针对文件1:字符串类文件
+    def __init__(self, path):
+        self.path = path  # path存放文件路径
+
+    def read_data(self):
+        f = open(self.path, "r", encoding="UTF-8")
+        Data_list = []  # 用于存放数据
+        for x in f.readlines():
+            x = x.strip()  # 处理每一行数据后面的换行符
+            a_list = x.split(",")  # 数据分割存入a
+            data=Data(a_list[0], a_list[1], int(a_list[2]), a_list[3])  # 调用Data函数赋值
+            Data_list.append(data)  # 存入列表
+        f.close()
+        return Data_list
+
+class File2(FileReader):
+    def __init__(self, path):
+        self.path = path  # path存放文件路径
+
+    def read_data(self):
+        f = open(self.path, "r", encoding="UTF-8")
+        Data_list = []  # 用于存放数据
+        for x in f.readlines():
+            a_dict=json.loads(x)
+            data=Data(a_dict["date"],a_dict["order_id"],int(a_dict["money"]),a_dict["province"]) # 通过键获取值,进行赋值
+            Data_list.append(data)
+        f.close()
+        return Data_list
